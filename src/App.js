@@ -5,21 +5,23 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
 import {BasicLayouts} from "./pages/Layouts/BasicLayouts";
-import {login} from "./pages/login";
+import {Login} from "./pages/login";
+import { SnackbarProvider } from 'notistack';
 
 function App() {
   return (
       <div className="App">
-          <Router>
+          <SnackbarProvider maxSnack={3}>
+            <Router>
             <Switch>
-              <Route exact path="/" component={login}/>
+              <Route exact path="/" component={Login}/>
               <Route path='/home' component={BasicLayouts}/>
-              <Route path='/login' component={login}/>
+              <Route path='/login' component={Login}/>
             </Switch>
           </Router>
+          </SnackbarProvider>
       </div>
   );
 }
