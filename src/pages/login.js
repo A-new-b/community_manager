@@ -14,18 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {useSnackbar} from "notistack";
 
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import {Copyright} from "../components/Copyright";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -47,11 +36,12 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export function Login() {
+export function Login(props) {
     const classes = useStyles();
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-    const handleClick = () => {
-        enqueueSnackbar('I love hooks');
+    const { enqueueSnackbar } = useSnackbar();
+    const login = () =>{
+        props.history.push('/home')
+        enqueueSnackbar('登陆成功',{variant:'success'})
     };
     return (
         <Container component="main" maxWidth="xs">
@@ -70,7 +60,7 @@ export function Login() {
                         required
                         fullWidth
                         id="email"
-                        label="Email Address"
+                        label="账号"
                         name="email"
                         autoComplete="email"
                         autoFocus
@@ -81,7 +71,7 @@ export function Login() {
                         required
                         fullWidth
                         name="password"
-                        label="Password"
+                        label="密码"
                         type="password"
                         id="password"
                         autoComplete="current-password"
@@ -95,9 +85,8 @@ export function Login() {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        onClick={handleClick}
-                    >
-                        Sign In
+                        onClick = {login}                    >
+                        登录
                     </Button>
                     <Grid container>
                         <Grid item xs>

@@ -18,7 +18,9 @@ import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
+import PersonIcon from '@material-ui/icons/Person';
+
+import {NavDrawer} from "../../components/nav-drawer";
 // import Chart from './Chart';
 // import Deposits from './Deposits';
 // import Orders from './Orders';
@@ -27,26 +29,15 @@ import {
     Switch,
     Route,
 } from "react-router-dom";
-import {home} from "../home";
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                a-new-b
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import {Information} from "../Information";
+import {Copyright} from "../../components/Copyright";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
+        height:'100%'
     },
     toolbar: {
         paddingRight: 24, // keep right padding when drawer closed
@@ -75,7 +66,7 @@ const useStyles = makeStyles(theme => ({
     },
     menuButton: {
         marginRight: 36,
-    },
+},
     menuButtonHidden: {
         display: 'none',
     },
@@ -105,7 +96,6 @@ const useStyles = makeStyles(theme => ({
     appBarSpacer: theme.mixins.toolbar,
     content: {
         flexGrow: 1,
-        height: '100vh',
         overflow: 'auto',
     },
     container: {
@@ -120,7 +110,7 @@ const useStyles = makeStyles(theme => ({
     },
     fixedHeight: {
         height: 240,
-    },
+    }
 }));
 
 export function BasicLayouts(props) {
@@ -156,6 +146,9 @@ export function BasicLayouts(props) {
                             <NotificationsIcon />
                         </Badge>
                     </IconButton>
+                    <IconButton color="inherit">
+                        <PersonIcon/>
+                    </IconButton>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -171,25 +164,25 @@ export function BasicLayouts(props) {
                     </IconButton>
                 </div>
                 <Divider />
-                <List>{mainListItems}</List>
-                <Divider />
-                <List>{secondaryListItems}</List>
+                <List>
+                    <NavDrawer/>
+                </List>
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
-                    <div>
+                    <div className={classes.test}>
                         <Router>
                             <Switch>
-                                <Route path={`${props.match.path}`} component={home}/>
-                                <Route path={`${props.match.path}/home`} component={home}/>
+                                <Route path={`${props.match.path}`} component={Information}/>
+                                <Route path={`${props.match.path}/Information`} component={Information}/>
                             </Switch>
                         </Router>
                     </div>
-                    <Box pt={4}>
-                        <Copyright />
-                    </Box>
                 </Container>
+                <Box pt={4}>
+                    <Copyright />
+                </Box>
             </main>
         </div>
     );
