@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import Box from '@material-ui/core/Box';
@@ -19,8 +19,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import PersonIcon from '@material-ui/icons/Person';
+import './pages.css'
 
-import {NavDrawer} from "../../components/nav-drawer";
+import {NavDrawer} from "../components/nav-drawer";
 // import Chart from './Chart';
 // import Deposits from './Deposits';
 // import Orders from './Orders';
@@ -29,15 +30,19 @@ import {
     Switch,
     Route,
 } from "react-router-dom";
-import {Information} from "../Information";
-import {Copyright} from "../../components/Copyright";
+// eslint-disable-next-line no-unused-vars
+import {Copyright} from "../components/Copyright";
+import {Login} from "./login";
+import {SnackbarProvider} from "notistack";
+import {Announcement} from "./subpages/announcement";
+import {Information} from "./subpages/Information";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
-        height:'100%'
+        height: '100%'
     },
     toolbar: {
         paddingRight: 24, // keep right padding when drawer closed
@@ -66,7 +71,7 @@ const useStyles = makeStyles(theme => ({
     },
     menuButton: {
         marginRight: 36,
-},
+    },
     menuButtonHidden: {
         display: 'none',
     },
@@ -113,7 +118,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export function BasicLayouts(props) {
+export function BasicLayouts() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
     const handleDrawerOpen = () => {
@@ -126,7 +131,7 @@ export function BasicLayouts(props) {
 
     return (
         <div className={classes.root}>
-            <CssBaseline />
+            <CssBaseline/>
             <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
                 <Toolbar className={classes.toolbar}>
                     <IconButton
@@ -136,14 +141,14 @@ export function BasicLayouts(props) {
                         onClick={handleDrawerOpen}
                         className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
                     >
-                        <MenuIcon />
+                        <MenuIcon/>
                     </IconButton>
                     <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
                         Dashboard
                     </Typography>
                     <IconButton color="inherit">
                         <Badge badgeContent={4} color="secondary">
-                            <NotificationsIcon />
+                            <NotificationsIcon/>
                         </Badge>
                     </IconButton>
                     <IconButton color="inherit">
@@ -151,39 +156,38 @@ export function BasicLayouts(props) {
                     </IconButton>
                 </Toolbar>
             </AppBar>
-            <Drawer
-                variant="permanent"
-                classes={{
-                    paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-                }}
-                open={open}
-            >
-                <div className={classes.toolbarIcon}>
-                    <IconButton onClick={handleDrawerClose}>
-                        <ChevronLeftIcon />
-                    </IconButton>
-                </div>
-                <Divider />
-                <List>
-                    <NavDrawer/>
-                </List>
-            </Drawer>
-            <main className={classes.content}>
-                <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
-                    <div className={classes.test}>
-                        <Router>
-                            <Switch>
-                                <Route path={`${props.match.path}`} component={Information}/>
-                                <Route path={`${props.match.path}/Information`} component={Information}/>
-                            </Switch>
-                        </Router>
+            <Router>
+                <Drawer
+                    variant="permanent"
+                    classes={{
+                        paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+                    }}
+                    open={open}
+                >
+                    <div className={classes.toolbarIcon}>
+                        <IconButton onClick={handleDrawerClose}>
+                            <ChevronLeftIcon/>
+                        </IconButton>
                     </div>
-                </Container>
-                <Box pt={4}>
-                    <Copyright />
-                </Box>
-            </main>
+                    <Divider/>
+                    <List>
+                        <NavDrawer/>
+                    </List>
+                </Drawer>
+                <main className={classes.content}>
+                    <div className={classes.appBarSpacer}/>
+                    <Container maxWidth="lg" className={classes.container}>
+                        <Switch>
+                            <Route path='/home/announcement' component={Announcement}/>
+                            <Route path='/home/health' component={Information}/>
+                            <Route path='/home/log' component={Announcement}/>
+                        </Switch>
+                    </Container>
+                    <Box pt={4}>
+                        <Copyright/>
+                    </Box>
+                </main>
+            </Router>
         </div>
     );
 }

@@ -40,7 +40,8 @@ export function Login(props) {
     const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
     const login = () =>{
-        props.history.push('/home')
+        props.history.push('/home/announcement');
+        // props.history.push();
         enqueueSnackbar('登陆成功',{variant:'success'})
     };
     return (

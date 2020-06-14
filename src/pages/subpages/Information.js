@@ -1,5 +1,5 @@
 import React from "react";
-import SimpleTable from "../components/Table";
+import SimpleTable from "../../components/Table";
 
 export function Information() {
     return(

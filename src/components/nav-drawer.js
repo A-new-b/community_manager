@@ -10,43 +10,41 @@ import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import {Link, useHistory} from "react-router-dom"
 
-const useStyle = makeStyles(theme =>({}));
+const useStyle = makeStyles(theme => ({}));
 
-export function NavDrawer(props) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const classes=useStyle();
-    return(
+
+export function NavDrawer() {
+    // const history = useHistory();
+    let history = useHistory();
+    return (
         <div>
             <ListItem button>
                 <ListItemIcon>
-                    <DashboardIcon />
+                    <DashboardIcon/>
                 </ListItemIcon>
-                <ListItemText primary="记录" />
+                <ListItemText primary="公告栏" onClick={() => {
+                    history.push('/home/announcement')
+                }}/>
             </ListItem>
             <ListItem button>
                 <ListItemIcon>
-                    <ShoppingCartIcon />
+                    <ShoppingCartIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Orders" />
-            </ListItem>
-            <ListItem button onClick={()=>{props.history.push('/home')}}>
-                <ListItemIcon>
-                    <PeopleIcon />
-                </ListItemIcon>
-                <ListItemText primary="Customers" />
+                <ListItemText primary="健康数据" onClick={() => {
+                    history.push('/home/health')
+                }}/>
+
             </ListItem>
             <ListItem button>
                 <ListItemIcon>
-                    <BarChartIcon />
+                    <PeopleIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Reports" />
-            </ListItem>
-            <ListItem button>
-                <ListItemIcon>
-                    <LayersIcon />
-                </ListItemIcon>
-                <ListItemText primary="Integrations" />
+                <ListItemText primary="日志" onClick={() => {
+                    history.push('/home/log')
+                }}/>
+
             </ListItem>
         </div>
     )
