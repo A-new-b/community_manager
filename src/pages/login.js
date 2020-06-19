@@ -52,7 +52,7 @@ export function Login(props) {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Login
+                    社区信息管理系统
                 </Typography>
                 <form className={classes.form} noValidate>
                     <TextField
@@ -79,7 +79,7 @@ export function Login(props) {
                     />
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary" />}
-                        label="Remember me"
+                        label="记住密码"
                     />
                     <Button
                         fullWidth
@@ -89,18 +89,18 @@ export function Login(props) {
                         onClick = {login}                    >
                         登录
                     </Button>
-                    <Grid container>
-                        <Grid item xs>
-                            <Link href="#" variant="body2">
-                                Forgot password?
-                            </Link>
-                        </Grid>
-                        <Grid item>
-                            <Link href="#" variant="body2">
-                                {"Don't have an account? Sign Up"}
-                            </Link>
-                        </Grid>
-                    </Grid>
+                    {/*<Grid container>*/}
+                    {/*    <Grid item xs>*/}
+                    {/*        <Link href="#" variant="body2">*/}
+                    {/*            Forgot password?*/}
+                    {/*        </Link>*/}
+                    {/*    </Grid>*/}
+                    {/*    <Grid item>*/}
+                    {/*        <Link href="#" variant="body2">*/}
+                    {/*            {"Don't have an account? Sign Up"}*/}
+                    {/*        </Link>*/}
+                    {/*    </Grid>*/}
+                    {/*</Grid>*/}
                 </form>
             </div>
             <Box mt={8}>

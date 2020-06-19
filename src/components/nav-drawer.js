@@ -20,30 +20,30 @@ export function NavDrawer() {
     let history = useHistory();
     return (
         <div>
-            <ListItem button>
+            <ListItem button onClick={() => {
+                history.push('/home/announcement')
+            }}>
                 <ListItemIcon>
                     <DashboardIcon/>
                 </ListItemIcon>
-                <ListItemText primary="公告栏" onClick={() => {
-                    history.push('/home/announcement')
-                }}/>
+                <ListItemText primary="公告栏" />
             </ListItem>
-            <ListItem button>
+            <ListItem button onClick={() => {
+                history.push('/home/health')
+            }}>
                 <ListItemIcon>
                     <ShoppingCartIcon/>
                 </ListItemIcon>
-                <ListItemText primary="健康数据" onClick={() => {
-                    history.push('/home/health')
-                }}/>
+                <ListItemText primary="健康数据" />
 
             </ListItem>
-            <ListItem button>
+            <ListItem button onClick={() => {
+                history.push('/home/log')
+            }}>
                 <ListItemIcon>
                     <PeopleIcon/>
                 </ListItemIcon>
-                <ListItemText primary="日志" onClick={() => {
-                    history.push('/home/log')
-                }}/>
+                <ListItemText primary="日志" />
 
             </ListItem>
         </div>
