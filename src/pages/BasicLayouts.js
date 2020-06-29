@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import {makeStyles} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -118,7 +118,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export function BasicLayouts() {
+export function BasicLayouts(props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
     const handleDrawerOpen = () => {
@@ -128,7 +128,14 @@ export function BasicLayouts() {
         setOpen(false);
     };
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
+    useEffect(
+        ()=>{
+            if (localStorage.getItem("username")===null)
+            {
+                props.history.push('/login');
+            }
+        }
+    );
     return (
         <div className={classes.root}>
             <CssBaseline/>

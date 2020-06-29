@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -15,6 +15,8 @@ import Container from '@material-ui/core/Container';
 import {useSnackbar} from "notistack";
 
 import {Copyright} from "../components/Copyright";
+
+import {login} from "../api/normal";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -39,10 +41,34 @@ const useStyles = makeStyles(theme => ({
 export function Login(props) {
     const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
-    const login = () =>{
-        props.history.push('/home/announcement');
-        // props.history.push();
-        enqueueSnackbar('登陆成功',{variant:'success'})
+    const [account,setAccount]=useState("");
+    const [password,setPassword]=useState("");
+    useEffect(
+        ()=>{
+            if (localStorage.getItem("username")!==null)
+            {
+                props.history.push('/home/announcement');
+            }
+        }
+    );
+    const Login = () =>{
+        // props.history.push('/home/announcement');
+        const data ={
+            device_id:account,
+            password:password
+        };
+        login(data).then(
+            res =>{
+                enqueueSnackbar('登录成功',{variant:'success'});
+                // console.log(res);
+                localStorage.setItem("username", res.data.username)
+                props.history.push('/home/announcement');
+            }
+        ).catch(
+            err =>{
+                enqueueSnackbar(err.response.data.msg,{variant:'error'})
+            }
+        );
     };
     return (
         <Container component="main" maxWidth="xs">
@@ -60,10 +86,12 @@ export function Login(props) {
                         margin="normal"
                         required
                         fullWidth
-                        id="email"
+                        id="account"
                         label="账号"
-                        name="email"
-                        autoComplete="email"
+                        name="account"
+                        autoComplete="account"
+                        value={account}
+                        onChange={(e)=>{setAccount(e.target.value)}}
                         autoFocus
                     />
                     <TextField
@@ -75,18 +103,21 @@ export function Login(props) {
                         label="密码"
                         type="password"
                         id="password"
+                        value={password}
+                        onChange={(e)=>{setPassword(e.target.value)}}
                         autoComplete="current-password"
                     />
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary" />}
-                        label="记住密码"
+                        label="记住帐号"
                     />
                     <Button
                         fullWidth
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        onClick = {login}                    >
+                        onClick = {Login}
+                    >
                         登录
                     </Button>
                     {/*<Grid container>*/}
