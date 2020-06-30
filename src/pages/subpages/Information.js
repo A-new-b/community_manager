@@ -8,22 +8,24 @@ import {timestamp_s} from "../../utils/tools";
 function createData( time, fat, pressure_s,pressure_d, others) {
     return {time, fat, pressure_s,pressure_d, others };
 }
-let rows = [];
 
 export function Information(props) {
     const { enqueueSnackbar } = useSnackbar();
 
+    let [rows,setRows]= useState([]);
+
     const informationInit= ()=>
     {
-        rows=[];
+        let temp=[];
         blocks().then(
             res =>{
                 for (let i =0;i<res.data.length;i++)
                 {
                     let data=JSON.parse(res.data[i].data_content)
                     let time = timestamp_s(res.data[i].create_time)
-                    rows.push(createData(time,data.fat,data.pressure_s,data.pressure_d,data.others))
+                    temp.push(createData(time,data.fat,data.pressure_s,data.pressure_d,data.others))
                 }
+                setRows(temp)
             }
         ).catch(
             err =>{
@@ -41,7 +43,7 @@ export function Information(props) {
     useEffect(() =>
     {
         informationInit()
-    });
+    },[]);
     return(
         <div>
             <SimpleTable rows={rows}/>
