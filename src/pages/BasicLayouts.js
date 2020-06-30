@@ -1,244 +1,149 @@
-import React, { useState, useEffect } from 'react';
-import clsx from 'clsx';
-import {makeStyles} from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
-import Box from '@material-ui/core/Box';
+import React from 'react';
+import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import PersonIcon from '@material-ui/icons/Person';
-import './pages.css'
-
-import {NavDrawer} from "../components/nav-drawer";
-// import Chart from './Chart';
-// import Deposits from './Deposits';
-// import Orders from './Orders';
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-} from "react-router-dom";
-// eslint-disable-next-line no-unused-vars
-import {Copyright} from "../components/Copyright";
-import {Login} from "./login";
-import {SnackbarProvider} from "notistack";
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import {Route, Switch, useHistory} from "react-router-dom";
 import {Announcement} from "./subpages/announcement";
 import {Information} from "./subpages/Information";
-import {MenuList} from "@material-ui/core";
+import { AccessAlarm, ThreeDRotation } from '@material-ui/icons';
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
-        height: '100%'
     },
-    toolbar: {
-        paddingRight: 24, // keep right padding when drawer closed
-    },
-    toolbarIcon: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        padding: '0 8px',
-        ...theme.mixins.toolbar,
-    },
-    appBar: {
-        zIndex: theme.zIndex.drawer + 1,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-    },
-    appBarShift: {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-    menuButton: {
-        marginRight: 36,
-    },
-    menuButtonHidden: {
-        display: 'none',
-    },
-    title: {
-        flexGrow: 1,
-    },
-    drawerPaper: {
-        position: 'relative',
-        whiteSpace: 'nowrap',
-        width: drawerWidth,
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-    drawerPaperClose: {
-        overflowX: 'hidden',
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        width: theme.spacing(7),
+    drawer: {
         [theme.breakpoints.up('sm')]: {
-            width: theme.spacing(9),
+            width: drawerWidth,
+            flexShrink: 0,
         },
     },
-    appBarSpacer: theme.mixins.toolbar,
-    content: {
-        flexGrow: 1,
-        overflow: 'auto',
+    appBar: {
+        [theme.breakpoints.up('sm')]: {
+            width: `calc(100% - ${drawerWidth}px)`,
+            marginLeft: drawerWidth,
+        },
     },
-    container: {
-        paddingTop: theme.spacing(4),
-        paddingBottom: theme.spacing(4),
+    menuButton: {
+        marginRight: theme.spacing(2),
+        [theme.breakpoints.up('sm')]: {
+            display: 'none',
+        },
     },
-    paper: {
-        padding: theme.spacing(2),
-        display: 'flex',
-        overflow: 'auto',
-        flexDirection: 'column',
+    // necessary for content to be below app bar
+    toolbar: theme.mixins.toolbar,
+    drawerPaper: {
+        width: drawerWidth,
     },
-    fixedHeight: {
-        height: 240,
-    }
 }));
 
 export function BasicLayouts(props) {
+    let history = useHistory();
+    const { window } = props;
     const classes = useStyles();
-    const [open, setOpen] = React.useState(true);
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
-    // const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+    const theme = useTheme();
+    const [mobileOpen, setMobileOpen] = React.useState(false);
 
-    const handleAnchorElClick = (event) => {
-        setAnchorEl(event.currentTarget);
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
     };
 
-    const handleAnchorElClose = () => {
-        setAnchorEl(null);
-    };
-    const exit = () =>{
-        document.cookie="";
-        localStorage.clear();
-        props.history.push("/login")
-    };
-    useEffect(
-        ()=>{
-            if (localStorage.getItem("username")===null)
-            {
-                props.history.push('/login');
-            }
-        }
+    const drawer = (
+        <div>
+            <div className={classes.toolbar} />
+            <Divider />
+            <List>
+                <ListItem button key={1} onClick={() => {
+                    history.push('/home/announcement')
+                }}>
+                    <ListItemIcon><AccessAlarm/></ListItemIcon>
+                    <ListItemText primary={"公告栏"} />
+                </ListItem>
+                <ListItem button key={2} onClick={() => {
+                    history.push('/home/health')
+                }}>
+                    <ListItemIcon><ThreeDRotation /></ListItemIcon>
+                    <ListItemText primary={"健康数据"} />
+                </ListItem>
+            </List>
+        </div>
     );
+
+    const container = window !== undefined ? () => window().document.body : undefined;
+
     return (
         <div className={classes.root}>
-            <CssBaseline/>
-            <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-                <Toolbar className={classes.toolbar}>
+            <CssBaseline />
+            <AppBar position="fixed" className={classes.appBar}>
+                <Toolbar>
                     <IconButton
-                        edge="start"
                         color="inherit"
                         aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+                        edge="start"
+                        onClick={handleDrawerToggle}
+                        className={classes.menuButton}
                     >
-                        <MenuIcon/>
+                        <MenuIcon />
                     </IconButton>
-                    <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                        Dashboard
+                    <Typography variant="h6" noWrap>
+                        Responsive drawer
                     </Typography>
-                    <IconButton color="inherit">
-                        <Badge badgeContent={4} color="secondary">
-                            <NotificationsIcon/>
-                        </Badge>
-                    </IconButton>
-                    <IconButton color="inherit"
-                                style={{
-                                    display:"flex",
-                                    flexDirection:"columns",
-                                    justifyContent:"center",
-                                    marginRight:"1%"
-                                }}
-                    >
-                        <PersonIcon fontSize="large" onClick={handleAnchorElClick}/>
-                        <Menu
-                            elevation={0}
-                            getContentAnchorEl={null}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'center',
-                            }}
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'center',
-                            }}
-                            id="simple-menu"
-                            anchorEl={anchorEl}
-                            keepMounted
-                            open={Boolean(anchorEl)}
-                            onClose={handleAnchorElClose}
-                        >
-                            <MenuItem onClick={exit}>退出登录</MenuItem>
-                        </Menu>
-                    </IconButton>
                 </Toolbar>
             </AppBar>
-            <Router>
-                <Drawer
-                    variant="permanent"
-                    classes={{
-                        paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-                    }}
-                    open={open}
-                >
-                    <div className={classes.toolbarIcon}>
-                        <IconButton onClick={handleDrawerClose}>
-                            <ChevronLeftIcon/>
-                        </IconButton>
-                    </div>
-                    <Divider/>
-                    <List>
-                        <NavDrawer/>
-                    </List>
-                </Drawer>
-                <main className={classes.content}>
-                    <div className={classes.appBarSpacer}/>
-                    <Container maxWidth="lg" className={classes.container}>
-                        <Switch>
-                            <Route path='/home/announcement' component={Announcement}/>
-                            <Route path='/home/health' component={Information}/>
-                            <Route path='/home/log' component={Announcement}/>
-                        </Switch>
-                    </Container>
-                    <Box pt={4}>
-                        <Copyright/>
-                    </Box>
-                </main>
-            </Router>
+            <nav className={classes.drawer} aria-label="mailbox folders">
+                {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+                <Hidden smUp implementation="css">
+                    <Drawer
+                        container={container}
+                        variant="temporary"
+                        anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+                        open={mobileOpen}
+                        onClose={handleDrawerToggle}
+                        classes={{
+                            paper: classes.drawerPaper,
+                        }}
+                        ModalProps={{
+                            keepMounted: true, // Better open performance on mobile.
+                        }}
+                    >
+                        {drawer}
+                    </Drawer>
+                </Hidden>
+                <Hidden xsDown implementation="css">
+                    <Drawer
+                        classes={{
+                            paper: classes.drawerPaper,
+                        }}
+                        variant="permanent"
+                        open
+                    >
+                        {drawer}
+                    </Drawer>
+                </Hidden>
+            </nav>
+            <main className={classes.content} style={{'width':'100%'}}>
+                <div className={classes.toolbar} />
+                <Switch>
+                    <Route path='/home/announcement' component={Announcement}/>
+                    <Route path='/home/health' component={Information}/>
+                    <Route path='/home/log' component={Announcement}/>
+                </Switch>
+            </main>
         </div>
     );
 }
-

@@ -8,6 +8,13 @@ export function Announcement(props) {
     const { enqueueSnackbar } = useSnackbar();
     const [list,setList]=useState([]);
     const [loading,setLoading]=useState(true);
+    const css = {
+        'border': 'black 1px solid',
+        'border-radius': '1rem',
+        'padding': '1rem',
+        'margin': '1rem auto',
+        'max-width': '750px'
+    }
     const announcementInit= ()=>
     {
         setLoading(true);
@@ -19,7 +26,7 @@ export function Announcement(props) {
                 {
                     let time = timestamp_s(res.data[i].create_time);
                     items.push(
-                        <div className={'announcement'} key={i}>
+                        <div style={css} key={i}>
                             <strong>{time}</strong>
                             <div style={{"margin": "0.5rem 1rem"}}>{res.data[i].title}</div>
                             <div style={{"margin": "0.5rem 1rem"}}>{res.data[i].content}</div>
