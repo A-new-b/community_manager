@@ -25,6 +25,8 @@ import {NavDrawer} from "../components/nav-drawer";
 // import Chart from './Chart';
 // import Deposits from './Deposits';
 // import Orders from './Orders';
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import {
     BrowserRouter as Router,
     Switch,
@@ -36,6 +38,7 @@ import {Login} from "./login";
 import {SnackbarProvider} from "notistack";
 import {Announcement} from "./subpages/announcement";
 import {Information} from "./subpages/Information";
+import {MenuList} from "@material-ui/core";
 
 const drawerWidth = 240;
 
@@ -121,13 +124,27 @@ const useStyles = makeStyles(theme => ({
 export function BasicLayouts(props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
+    const [anchorEl, setAnchorEl] = React.useState(null);
     const handleDrawerOpen = () => {
         setOpen(true);
     };
     const handleDrawerClose = () => {
         setOpen(false);
     };
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+    // const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+    const handleAnchorElClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleAnchorElClose = () => {
+        setAnchorEl(null);
+    };
+    const exit = () =>{
+        document.cookie="";
+        localStorage.clear();
+        props.history.push("/login")
+    };
     useEffect(
         ()=>{
             if (localStorage.getItem("username")===null)
@@ -158,8 +175,34 @@ export function BasicLayouts(props) {
                             <NotificationsIcon/>
                         </Badge>
                     </IconButton>
-                    <IconButton color="inherit">
-                        <PersonIcon/>
+                    <IconButton color="inherit"
+                                style={{
+                                    display:"flex",
+                                    flexDirection:"columns",
+                                    justifyContent:"center",
+                                    marginRight:"1%"
+                                }}
+                    >
+                        <PersonIcon fontSize="large" onClick={handleAnchorElClick}/>
+                        <Menu
+                            elevation={0}
+                            getContentAnchorEl={null}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'center',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'center',
+                            }}
+                            id="simple-menu"
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={Boolean(anchorEl)}
+                            onClose={handleAnchorElClose}
+                        >
+                            <MenuItem onClick={exit}>退出登录</MenuItem>
+                        </Menu>
                     </IconButton>
                 </Toolbar>
             </AppBar>

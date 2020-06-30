@@ -14,19 +14,8 @@ const useStyles = makeStyles({
     },
 });
 
-function createData( time, fat, pressure_s,pressure_d, others) {
-    return {time, fat, pressure_s,pressure_d, others };
-}
 
-const rows = [
-    createData("2020-5-20", 4.0, 110, 70,"一切正常"),
-    createData("2020-5-21", 5.0, 100, 80,"一切正常"),
-    createData("2020-5-22", 5.1, 120, 85,"一切正常"),
-    createData("2020-5-23", 4.2, 125, 82,"一切正常"),
-    createData("2020-5-24", 5.3, 113, 79,"一切正常"),
-];
-
-export default function SimpleTable() {
+export default function SimpleTable(props) {
     const classes = useStyles();
 
     return (
@@ -42,7 +31,7 @@ export default function SimpleTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map(row => (
+                    {props.rows.map(row => (
                         <TableRow key={row.time}>
                             <TableCell component="th" scope="row">
                                 {row.time}
