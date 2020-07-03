@@ -108,10 +108,10 @@ export function Login(props) {
                         onChange={(e)=>{setPassword(e.target.value)}}
                         autoComplete="current-password"
                     />
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
-                        label="记住帐号"
-                    />
+                    {/*<FormControlLabel*/}
+                    {/*    control={<Checkbox value="remember" color="primary" />}*/}
+                    {/*    label="记住帐号"*/}
+                    {/*/>*/}
                     <Button
                         fullWidth
                         variant="contained"
