@@ -11,15 +11,13 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {Route, Switch, useHistory} from "react-router-dom";
+import {makeStyles, useTheme} from '@material-ui/core/styles';
+import {Route, Switch, useHistory, useLocation} from "react-router-dom";
 import {Announcement} from "./subpages/announcement";
 import {Information} from "./subpages/Information";
-import { AccessAlarm, ThreeDRotation } from '@material-ui/icons';
+import {AccessAlarm, ThreeDRotation} from '@material-ui/icons';
 
 const drawerWidth = 240;
 
@@ -52,9 +50,18 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+function getPageInfoByPathName(pathname){
+    if(pathname === '/home/announcement'){
+        return '公告'
+    } else if (pathname === '/home/health'){
+        return '健康数据'
+    }
+}
+
 export function BasicLayouts(props) {
     let history = useHistory();
-    const { window } = props;
+    let location = useLocation();
+    const {window} = props;
     const classes = useStyles();
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -65,20 +72,20 @@ export function BasicLayouts(props) {
 
     const drawer = (
         <div>
-            <div className={classes.toolbar} />
-            <Divider />
+            <div className={classes.toolbar}/>
+            <Divider/>
             <List>
                 <ListItem button key={1} onClick={() => {
                     history.push('/home/announcement')
                 }}>
                     <ListItemIcon><AccessAlarm/></ListItemIcon>
-                    <ListItemText primary={"公告栏"} />
+                    <ListItemText primary={"公告栏"}/>
                 </ListItem>
                 <ListItem button key={2} onClick={() => {
                     history.push('/home/health')
                 }}>
-                    <ListItemIcon><ThreeDRotation /></ListItemIcon>
-                    <ListItemText primary={"健康数据"} />
+                    <ListItemIcon><ThreeDRotation/></ListItemIcon>
+                    <ListItemText primary={"健康数据"}/>
                 </ListItem>
             </List>
         </div>
@@ -86,11 +93,17 @@ export function BasicLayouts(props) {
 
     const container = window !== undefined ? () => window().document.body : undefined;
 
+    const exit = () =>{
+        document.cookie="";
+        localStorage.clear();
+        props.history.push("/login")
+    };
+
     return (
         <div className={classes.root}>
-            <CssBaseline />
+            <CssBaseline/>
             <AppBar position="fixed" className={classes.appBar}>
-                <Toolbar>
+                <Toolbar style={{display: 'block'}}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -98,11 +111,17 @@ export function BasicLayouts(props) {
                         onClick={handleDrawerToggle}
                         className={classes.menuButton}
                     >
-                        <MenuIcon />
+                        <MenuIcon/>
                     </IconButton>
-                    <Typography variant="h6" noWrap>
-                        Responsive drawer
-                    </Typography>
+                    <h2 style={{display: 'inline-block'}}>{getPageInfoByPathName(location.pathname)}</h2>
+                    <div style={{float: 'right', margin: '22px 0'}}>
+                        <div style={{display:'inline-block',margin:'0 10px'}}>
+                            用户
+                        </div>
+                        <div style={{display:'inline-block', cursor: 'pointer'}} onClick={exit}>
+                            退出
+                        </div>
+                    </div>
                 </Toolbar>
             </AppBar>
             <nav className={classes.drawer} aria-label="mailbox folders">
@@ -136,12 +155,11 @@ export function BasicLayouts(props) {
                     </Drawer>
                 </Hidden>
             </nav>
-            <main className={classes.content} style={{'width':'100%'}}>
-                <div className={classes.toolbar} />
+            <main className={classes.content} style={{'width': '100%'}}>
+                <div className={classes.toolbar}/>
                 <Switch>
                     <Route path='/home/announcement' component={Announcement}/>
                     <Route path='/home/health' component={Information}/>
-                    <Route path='/home/log' component={Announcement}/>
                 </Switch>
             </main>
         </div>
