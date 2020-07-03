@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -65,7 +65,7 @@ export function BasicLayouts(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = React.useState(false);
-
+    const [username,setUsername]=React.useState("");
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
@@ -99,6 +99,17 @@ export function BasicLayouts(props) {
         props.history.push("/login")
     };
 
+    useEffect(
+        ()=>{
+            if (localStorage.getItem("username")===null)
+            {
+                props.history.push('/login');
+            }
+            else {
+                setUsername(localStorage.getItem("username"))
+            }
+        }
+    );
     return (
         <div className={classes.root}>
             <CssBaseline/>
@@ -116,7 +127,7 @@ export function BasicLayouts(props) {
                     <h2 style={{display: 'inline-block'}}>{getPageInfoByPathName(location.pathname)}</h2>
                     <div style={{float: 'right', margin: '22px 0'}}>
                         <div style={{display:'inline-block',margin:'0 10px'}}>
-                            用户
+                            {username}
                         </div>
                         <div style={{display:'inline-block', cursor: 'pointer'}} onClick={exit}>
                             退出
