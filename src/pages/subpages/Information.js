@@ -21,8 +21,8 @@ export function Information(props) {
             res =>{
                 for (let i =0;i<res.data.length;i++)
                 {
-                    let data=JSON.parse(res.data[i].data_content)
-                    let time = timestamp_s(res.data[i].create_time)
+                    let data=JSON.parse(res.data[i].data_content);
+                    let time = timestamp_s(res.data[i].create_time);
                     temp.push(createData(time,data.fat,data.pressure_s,data.pressure_d,data.others))
                 }
                 setRows(temp)

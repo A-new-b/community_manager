@@ -54,16 +54,22 @@ export function Login(props) {
     const Login = () =>{
         // props.history.push('/home/announcement');
         const data ={
-            device_id:account,
+            username:account,
             password:password
         };
-        
         login(data).then(
             res =>{
-                enqueueSnackbar('登录成功',{variant:'success'});
                 // console.log(res);
-                localStorage.setItem("username", res.data.username)
-                props.history.push('/home/announcement');
+                if(res.data.code ===0)
+                {
+                    enqueueSnackbar(res.data.msg,{variant:'error'})
+                }else {
+                    enqueueSnackbar('登录成功',{variant:'success'});
+                    console.log(res);
+                    localStorage.setItem("token", res.data.token);
+                    localStorage.setItem("username", account);
+                    props.history.push('/home/announcement');
+                }
             }
         ).catch(
             err =>{

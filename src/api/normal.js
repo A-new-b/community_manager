@@ -16,9 +16,23 @@ export function notice() {
         method: "get",
     });
 }
-export function blocks() {
+export function getInfo(token) {
     return axios({
-        url: `${URL}blocks`,
+        headers: {
+            'Authorization': 'Bearer ' + token,
+        },
+        url: `${URL}information`,
         method: "get",
+    });
+}
+
+export function createAsset(token,info) {
+    return axios({
+        headers: {
+            'Authorization': 'Bearer ' + token,
+        },
+        url: `${URL}createAsset`,
+        data:info,
+        method: "post",
     });
 }

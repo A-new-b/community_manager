@@ -6,6 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
+// eslint-disable-next-line no-unused-vars
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -16,7 +17,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import {Route, Switch, useHistory, useLocation} from "react-router-dom";
 import {Announcement} from "./subpages/announcement";
-import {Information} from "./subpages/Information";
+import {TableList} from "./subpages/table";
 import {AccessAlarm, ThreeDRotation} from '@material-ui/icons';
 
 const drawerWidth = 240;
@@ -101,7 +102,7 @@ export function BasicLayouts(props) {
 
     useEffect(
         ()=>{
-            if (localStorage.getItem("username")===null)
+            if (localStorage.getItem("token")===null)
             {
                 props.history.push('/login');
             }
@@ -167,10 +168,10 @@ export function BasicLayouts(props) {
                 </Hidden>
             </nav>
             <main className={classes.content} style={{'width': '100%'}}>
-                <div className={classes.toolbar}/>
+                <div className={classes.toolbar} style={{'padding': '2%'}}/>
                 <Switch>
                     <Route path='/home/announcement' component={Announcement}/>
-                    <Route path='/home/health' component={Information}/>
+                    <Route path='/home/health' component={TableList}/>
                 </Switch>
             </main>
         </div>

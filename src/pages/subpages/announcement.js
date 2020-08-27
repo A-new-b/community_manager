@@ -1,4 +1,4 @@
-import Container from "@material-ui/core/Container";
+// import Container from "@material-ui/core/Container";
 import React, { useState, useEffect } from 'react';
 import {notice} from "../../api/normal";
 import {useSnackbar} from "notistack";
@@ -7,7 +7,7 @@ import {timestamp_s} from "../../utils/tools";
 export function Announcement(props) {
     const { enqueueSnackbar } = useSnackbar();
     const [list,setList]=useState([]);
-    const [loading,setLoading]=useState(true);
+    const [loading,setLoading]=useState(false);
     const css = {
         'border': 'black 1px solid',
         'border-radius': '1rem',
@@ -20,7 +20,6 @@ export function Announcement(props) {
         setLoading(true);
         notice().then(
             res =>{
-                console.log(res);
                 let items=[];
                 for( let i =0;i<res.data.length;i++)
                 {
@@ -52,7 +51,7 @@ export function Announcement(props) {
     };
     useEffect(() =>
     {
-        announcementInit()
+        // announcementInit()
     },[]);
 
     if (loading===true)
@@ -65,8 +64,10 @@ export function Announcement(props) {
         )
     }
     else return (
-        <div>
-            {list}
+        <div style={css}>
+            <strong>暂无消息</strong>
+            <div style={{"margin": "0.5rem 1rem"}}>拒绝摸鱼</div>
+            <div style={{"margin": "0.5rem 1rem"}}>再重复一遍，拒绝摸鱼</div>
         </div>
     )
 
