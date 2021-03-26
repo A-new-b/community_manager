@@ -65,9 +65,9 @@ export function Announcement(props) {
     }
     else return (
         <div style={css}>
-            <strong>暂无消息</strong>
-            <div style={{"margin": "0.5rem 1rem"}}>拒绝摸鱼</div>
-            <div style={{"margin": "0.5rem 1rem"}}>再重复一遍，拒绝摸鱼</div>
+            <strong>系统通知</strong>
+            <div style={{"margin": "0.5rem 1rem"}}>社区信息管理系统上线了！</div>
+            <div style={{"margin": "0.5rem 1rem"}}>在这里你可以记录下生活的信息哦</div>
         </div>
     )
 
